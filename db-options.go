@@ -10,14 +10,14 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-type DB struct {
+type O struct {
 	DB      *gorm.DB
 	Scopes  []scopes.Scope
 	Clauses []clause.Expression
 	Timeout time.Duration
 }
 
-func (x *DB) newContext() (ctx context.Context, cancel context.CancelFunc) {
+func (x *O) newContext() (ctx context.Context, cancel context.CancelFunc) {
 	if x.Timeout > 0 {
 		return context.WithTimeout(context.Background(), x.Timeout)
 	}

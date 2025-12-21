@@ -69,7 +69,7 @@ func (x *xConnector) Connect(callback ...ConnectionCallback) (inst Instance, err
 
 	db = x.call(db, callback...)
 
-	inst = &xInstance{opts: x.opts, db: db}
+	inst = Instance{opts: x.opts, db: db}
 
 	return
 }

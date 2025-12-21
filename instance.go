@@ -14,28 +14,16 @@ type SeederEntry interface {
 	Handler(db *gorm.DB) (err error)
 }
 
-type Instance interface {
-	Get(options ...DB) (db *gorm.DB, err error)
-	WithCancel(options ...DB) (db *gorm.DB, cancel context.CancelFunc, err error)
-
-	Migrate(models ...any) (err error)
-	Seed(entries ...SeederEntry) (err error)
-}
-
-type xInstance struct {
+type Instance struct {
 	opts Options
 	db   *gorm.DB
 }
 
-func (x *xInstance) New() *gorm.DB {
-	return NewSession(x.db)
-}
-
-func (x *xInstance) Get(options ...DB) (db *gorm.DB, err error) {
+func (x *Instance) Get(options ...O) (db *gorm.DB, err error) {
 	opts := x.dbOptions(options...)
 
 	if db = opts.DB; db == nil {
-		db = x.New()
+		db = NewSession(x.db)
 	}
 
 	if db == nil {
@@ -56,7 +44,7 @@ func (x *xInstance) Get(options ...DB) (db *gorm.DB, err error) {
 	return
 }
 
-func (x *xInstance) WithCancel(options ...DB) (db *gorm.DB, cancel context.CancelFunc, err error) {
+func (x *Instance) WithCancel(options ...O) (db *gorm.DB, cancel context.CancelFunc, err error) {
 	opts := x.dbOptions(options...)
 
 	db, err = x.Get(opts)
@@ -72,7 +60,7 @@ func (x *xInstance) WithCancel(options ...DB) (db *gorm.DB, cancel context.Cance
 	return
 }
 
-func (x *xInstance) Migrate(models ...any) (err error) {
+func (x *Instance) Migrate(models ...any) (err error) {
 	fmt.Print("Running Database Migration... ")
 
 	db, err := x.Get()
@@ -103,7 +91,7 @@ func (x *xInstance) Migrate(models ...any) (err error) {
 	return
 }
 
-func (x *xInstance) Seed(entries ...SeederEntry) (err error) {
+func (x *Instance) Seed(entries ...SeederEntry) (err error) {
 	fmt.Println("Running Database Seeders...")
 
 	db, err := x.Get()
@@ -126,7 +114,7 @@ func (x *xInstance) Seed(entries ...SeederEntry) (err error) {
 	return
 }
 
-func (x *xInstance) seed(db *gorm.DB, entry SeederEntry) (err error) {
+func (x *Instance) seed(db *gorm.DB, entry SeederEntry) (err error) {
 	name := strings.TrimSpace(entry.Name())
 
 	fmt.Printf("Seeding %v... ", name)
@@ -142,10 +130,10 @@ func (x *xInstance) seed(db *gorm.DB, entry SeederEntry) (err error) {
 	return
 }
 
-func (x *xInstance) dbOptions(options ...DB) DB {
+func (x *Instance) dbOptions(options ...O) O {
 	if len(options) > 0 {
 		return options[0]
 	}
 
-	return DB{}
+	return O{}
 }
