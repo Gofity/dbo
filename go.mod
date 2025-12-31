@@ -3,7 +3,9 @@ module github.com/Gofity/dbo
 go 1.25.5
 
 require (
+	github.com/Gofity/gokit v1.0.2
 	github.com/stretchr/testify v1.11.1
+	golang.org/x/exp v0.0.0-20251219203646-944ab1f22d93
 	gorm.io/driver/mysql v1.6.0
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/driver/sqlite v1.6.0
@@ -25,7 +27,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	golang.org/x/crypto v0.31.0 // indirect
-	golang.org/x/sync v0.10.0 // indirect
+	golang.org/x/sync v0.19.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
