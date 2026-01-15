@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/fatih/color"
 	"gorm.io/gorm"
 )
 
@@ -61,7 +62,7 @@ func (x *Instance) WithCancel(options ...O) (db *gorm.DB, cancel context.CancelF
 }
 
 func (x *Instance) Migrate(models ...any) (err error) {
-	fmt.Print("Running Database Migration... ")
+	color.New(color.FgMagenta).Print("Running Database Migration... ")
 
 	db, err := x.Get()
 
@@ -85,14 +86,14 @@ func (x *Instance) Migrate(models ...any) (err error) {
 		return
 	}
 
-	fmt.Println("Completed!")
+	color.New(color.FgMagenta).Println("Completed!")
 	fmt.Println()
 
 	return
 }
 
 func (x *Instance) Seed(entries ...SeederEntry) (err error) {
-	fmt.Println("Running Database Seeders...")
+	color.New(color.FgMagenta).Println("Running Database Seeders...")
 
 	db, err := x.Get()
 
@@ -108,7 +109,7 @@ func (x *Instance) Seed(entries ...SeederEntry) (err error) {
 		}
 	}
 
-	fmt.Println("Database Seeders Completed!")
+	color.New(color.FgMagenta).Println("Database Seeders Completed!")
 	fmt.Println()
 
 	return
@@ -117,6 +118,7 @@ func (x *Instance) Seed(entries ...SeederEntry) (err error) {
 func (x *Instance) seed(db *gorm.DB, entry SeederEntry) (err error) {
 	name := strings.TrimSpace(entry.Name())
 
+	name = color.New(color.BgBlue).Sprint(name)
 	fmt.Printf("Seeding %v... ", name)
 
 	err = entry.Handler(db)
@@ -125,7 +127,7 @@ func (x *Instance) seed(db *gorm.DB, entry SeederEntry) (err error) {
 		return
 	}
 
-	fmt.Println("Completed!")
+	color.New(color.FgGreen).Println("Completed!")
 
 	return
 }
