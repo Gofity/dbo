@@ -118,7 +118,7 @@ func (x *Instance) Seed(entries ...SeederEntry) (err error) {
 func (x *Instance) seed(db *gorm.DB, entry SeederEntry) (err error) {
 	name := strings.TrimSpace(entry.Name())
 
-	name = color.New(color.BgBlue).Sprint(name)
+	name = color.New(color.FgBlue).Sprint(name)
 	fmt.Printf("Seeding %v... ", name)
 
 	err = entry.Handler(db)
